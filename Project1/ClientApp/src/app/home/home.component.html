@@ -1,0 +1,36 @@
+<p *ngIf="!categories"><em>Loading...</em></p>
+<div class="m-3" >
+  <form>
+    <div class="form-group form-inline">
+      <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="searchTerm"
+             (input)="search($event.target.value)" />
+    </div>
+  </form>
+  <table class="table table-striped" *ngIf="categories">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" sortable="kategori">Kategori</th>
+        <th scope="col" sortable="id">Id</th>
+        <th scope="col" sortable="halId">HalId</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of categories | listFilter: searchTerm | slice: (page-1) * pageSize : page * pageSize; index as i">
+        <th scope="row">{{ (page -1) * pageSize + i + 1 }}</th>
+        <td>{{ item.kategori.toLowerCase() }}</td> 
+        <td>{{ item.id}}</td>
+        <td>{{ item.halId}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="10" [boundaryLinks]="true"
+                  [pageSize]="pageSize" class="d-flex justify-content-center"></ngb-pagination>
+  <div>
+    Toplam Kategori Sayısı : {{totalLength}}
+  </div>
+  <div>
+    Filtrelenmiş Kategori Sayısı : {{collectionSize}}
+  </div>
+</div>
